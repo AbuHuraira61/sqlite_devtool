@@ -53,7 +53,7 @@ class InspectorService {
   Future<QueryResult> executeQuery(String query) async {
     final stopwatch = Stopwatch()..start();
     final decoded = await _call(
-      'ext.sqlite_inspector.executeQuery',
+      'ext.sqlite_devtool_api.executeQuery',
       args: {'query': query},
     );
     stopwatch.stop();
@@ -67,4 +67,5 @@ class InspectorService {
       elapsed: stopwatch.elapsed,
     );
   }
+}
 }

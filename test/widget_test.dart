@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:db_devtoolkit/src/models.dart';
+import 'package:sqlite_devtool/src/models.dart';
 
 void main() {
   test('DbSchema parses tables, columns, and foreign keys', () {

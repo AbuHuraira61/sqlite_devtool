@@ -5,19 +5,19 @@ import 'src/inspector_shell.dart';
 import 'src/theme.dart';
 
 void main() {
-  runApp(const SqliteInspectorApp());
+  runApp(const SqliteDevtoolApp());
 }
 
-/// SQLite Inspector — a DevTools extension for browsing, mapping, and
+/// SQLite DevTool — a DevTools extension for browsing, mapping, and
 /// querying the sqflite database of the connected app.
-class SqliteInspectorApp extends StatelessWidget {
-  const SqliteInspectorApp({super.key});
+class SqliteDevtoolApp extends StatelessWidget {
+  const SqliteDevtoolApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return DevToolsExtension(
       child: MaterialApp(
-        title: 'SQLite Inspector',
+        title: 'SQLite DevTool',
         debugShowCheckedModeBanner: false,
         theme: buildInspectorTheme(),
         home: const InspectorShell(),

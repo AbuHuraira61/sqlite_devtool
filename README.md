@@ -1,4 +1,4 @@
-# db_devtoolkit — SQLite Inspector for Flutter DevTools
+# sqlite_devtool — SQLite Inspector for Flutter DevTools
 
 A DevTools extension that lets you inspect the sqflite database of a running
 Flutter app: browse tables, run SQL queries, and see an interactive **schema
@@ -7,7 +7,7 @@ map** of how tables connect to each other via foreign keys.
 This repo contains two parts:
 
 - **The extension UI** (`lib/`) — the panel shown inside DevTools.
-- **[`sqlite_inspector/`](sqlite_inspector/)** — the package your apps depend
+- **[`sqlite_devtool_api/`](sqlite_devtool_api/)** — the package your apps depend
   on. It registers the service extensions that read the database, and carries
   the built UI so DevTools can discover it.
 
@@ -15,12 +15,12 @@ This repo contains two parts:
 
 ```yaml
 dependencies:
-  sqlite_inspector:
-    path: ../db_devtoolkit/sqlite_inspector
+  sqlite_devtool_api:
+    path: ../sqlite_devtool/sqlite_devtool_api
 ```
 
 ```dart
-import 'package:sqlite_inspector/sqlite_inspector.dart';
+import 'package:sqlite_devtool_api/sqlite_devtool_api.dart';
 
 final db = await openDatabase('app.db');
 SqliteInspector.register(db);

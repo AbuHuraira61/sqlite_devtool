@@ -1,4 +1,4 @@
-/// Schema returned by `ext.sqlite_inspector.getSchema`.
+/// Schema returned by `ext.sqlite_devtool_api.getSchema`.
 class DbSchema {
   const DbSchema({required this.tables});
 

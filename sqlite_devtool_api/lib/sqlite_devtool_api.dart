@@ -48,7 +48,7 @@ class SqliteInspector {
       }
     });
 
-    developer.registerExtension('ext.sqlite_inspector.executeQuery',
+    developer.registerExtension('ext.sqlite_devtool_api.executeQuery',
         (method, params) async {
       try {
         final db = _requireDb();
@@ -173,4 +173,5 @@ class SqliteInspector {
         },
     };
   }
+}
 }
