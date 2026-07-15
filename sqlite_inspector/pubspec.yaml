@@ -1,0 +1,17 @@
+name: sqlite_inspector
+description: >-
+  A DevTools extension that lets you browse tables and run SQL queries
+  against the sqflite database of a running Flutter app.
+version: 0.2.0
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: ^2.3.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
