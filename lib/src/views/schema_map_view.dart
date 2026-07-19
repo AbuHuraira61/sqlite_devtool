@@ -11,7 +11,7 @@ const _headerHeight = 40.0;
 const _rowHeight = 24.0;
 const _footerHeight = 22.0;
 const _bottomPad = 8.0;
-const _maxColumnRows = 12;
+const _maxColumnRows = 100;
 
 double _cardHeight(TableSchema table) {
   final shown = math.min(table.columns.length, _maxColumnRows);
@@ -53,13 +53,15 @@ List<_SchemaEdge> _buildEdges(DbSchema schema) {
       declared.add(fk.column);
       final target = byLowerName[fk.refTable.toLowerCase()];
       if (target == null) continue;
-      edges.add(_SchemaEdge(
-        from: table.name,
-        fromColumn: fk.column,
-        to: target,
-        toColumn: fk.refColumn,
-        inferred: false,
-      ));
+      edges.add(
+        _SchemaEdge(
+          from: table.name,
+          fromColumn: fk.column,
+          to: target,
+          toColumn: fk.refColumn,
+          inferred: false,
+        ),
+      );
     }
     // Undeclared but conventional links: a `user_id` column pointing at a
     // `user`/`users` table reads as a relationship even without a constraint.
@@ -76,13 +78,15 @@ List<_SchemaEdge> _buildEdges(DbSchema schema) {
       for (final candidate in candidates) {
         final target = byLowerName[candidate];
         if (target != null && target != table.name) {
-          edges.add(_SchemaEdge(
-            from: table.name,
-            fromColumn: column.name,
-            to: target,
-            toColumn: null,
-            inferred: true,
-          ));
+          edges.add(
+            _SchemaEdge(
+              from: table.name,
+              fromColumn: column.name,
+              to: target,
+              toColumn: null,
+              inferred: true,
+            ),
+          );
           break;
         }
       }
@@ -119,10 +123,11 @@ Map<String, Offset> _gridPositions(
       final name = queue.removeAt(0);
       if (!visited.add(name)) continue;
       ordered.add(name);
-      final neighbors = (adjacency[name] ?? const <String>{})
-          .where((n) => !visited.contains(n))
-          .toList()
-        ..sort((a, b) => (degree[b] ?? 0).compareTo(degree[a] ?? 0));
+      final neighbors =
+          (adjacency[name] ?? const <String>{})
+              .where((n) => !visited.contains(n))
+              .toList()
+            ..sort((a, b) => (degree[b] ?? 0).compareTo(degree[a] ?? 0));
       queue.addAll(neighbors);
     }
   }
@@ -264,13 +269,14 @@ class _SchemaMapViewState extends State<SchemaMapView> {
                               if (edge.from == table.name) edge.fromColumn,
                           },
                           onTap: () => setState(() {
-                            _focused =
-                                _focused == table.name ? null : table.name;
+                            _focused = _focused == table.name
+                                ? null
+                                : table.name;
                           }),
                           onDoubleTap: () => widget.onOpenTable(table.name),
                           onDrag: (delta) => setState(() {
-                            final scale =
-                                _viewController.value.getMaxScaleOnAxis();
+                            final scale = _viewController.value
+                                .getMaxScaleOnAxis();
                             _positions[table.name] =
                                 _positions[table.name]! + delta / scale;
                           }),
@@ -295,10 +301,11 @@ class _SchemaMapViewState extends State<SchemaMapView> {
             style: TextButton.styleFrom(
               foregroundColor: Palette.textMid,
               backgroundColor: Palette.paper.withValues(alpha: .92),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              textStyle:
-                  const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              textStyle: const TextStyle(
+                fontSize: 11.5,
+                fontWeight: FontWeight.w600,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
                 side: const BorderSide(color: Palette.line),
@@ -375,8 +382,11 @@ class _TableCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Row(
                       children: [
-                        const Icon(Icons.table_chart_rounded,
-                            size: 14, color: Palette.blueprint),
+                        const Icon(
+                          Icons.table_chart_rounded,
+                          size: 14,
+                          color: Palette.blueprint,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
@@ -393,7 +403,9 @@ class _TableCard extends StatelessWidget {
                         if (table.rowCount >= 0)
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2),
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
                               color: Palette.paperRaised,
                               borderRadius: BorderRadius.circular(99),
@@ -421,7 +433,9 @@ class _TableCard extends StatelessWidget {
                       child: Text(
                         '+$hidden more columns',
                         style: const TextStyle(
-                            color: Palette.textLow, fontSize: 10),
+                          color: Palette.textLow,
+                          fontSize: 10,
+                        ),
                       ),
                     ),
                   ),
@@ -446,13 +460,22 @@ class _TableCard extends StatelessWidget {
               width: 14,
               child: Center(
                 child: column.isPrimaryKey
-                    ? const Icon(Icons.vpn_key_rounded,
-                        size: 11, color: Palette.brass)
+                    ? const Icon(
+                        Icons.vpn_key_rounded,
+                        size: 11,
+                        color: Palette.brass,
+                      )
                     : isFk
-                        ? const Icon(Icons.link_rounded,
-                            size: 12, color: Palette.blueprint)
-                        : const Icon(Icons.circle,
-                            size: 3.5, color: Palette.textLow),
+                    ? const Icon(
+                        Icons.link_rounded,
+                        size: 12,
+                        color: Palette.blueprint,
+                      )
+                    : const Icon(
+                        Icons.circle,
+                        size: 3.5,
+                        color: Palette.textLow,
+                      ),
               ),
             ),
             const SizedBox(width: 7),
@@ -462,8 +485,7 @@ class _TableCard extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color:
-                      column.isPrimaryKey ? Palette.textHi : Palette.textMid,
+                  color: column.isPrimaryKey ? Palette.textHi : Palette.textMid,
                   fontFamily: monoFamily,
                   fontSize: 11.5,
                 ),
@@ -576,7 +598,11 @@ class _BlueprintPainter extends CustomPainter {
     }
     if (index < 0) return position.dy + _headerHeight / 2;
     final shown = math.min(index, _maxColumnRows - 1);
-    return position.dy + _headerHeight + 1 + shown * _rowHeight + _rowHeight / 2;
+    return position.dy +
+        _headerHeight +
+        1 +
+        shown * _rowHeight +
+        _rowHeight / 2;
   }
 
   void _paintEdge(Canvas canvas, _SchemaEdge edge) {
@@ -584,7 +610,10 @@ class _BlueprintPainter extends CustomPainter {
     final toTable = schema.table(edge.to);
     final fromPos = positions[edge.from];
     final toPos = positions[edge.to];
-    if (fromTable == null || toTable == null || fromPos == null || toPos == null) {
+    if (fromTable == null ||
+        toTable == null ||
+        fromPos == null ||
+        toPos == null) {
       return;
     }
 
