@@ -14,16 +14,18 @@ This repo contains two parts:
 ## Use it in an app
 
 ```yaml
-dependencies:
   sqlite_devtool_api:
-    path: ../sqlite_devtool/sqlite_devtool_api
+    git:
+     url: https://github.com/AbuHuraira61/sqlite_devtool.git
+     path: sqlite_devtool_api
+
 ```
 
 ```dart
 import 'package:sqlite_devtool_api/sqlite_devtool_api.dart';
 
 final db = await openDatabase('app.db');
-SqliteInspector.register(db);
+SqliteDevtoolApi.register(db);
 ```
 
 Run the app in debug mode, open Flutter DevTools, enable the extension when

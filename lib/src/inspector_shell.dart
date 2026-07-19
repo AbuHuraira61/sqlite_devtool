@@ -184,7 +184,7 @@ class _InspectorShellState extends State<InspectorShell> {
               constraints: const BoxConstraints(maxWidth: 420),
               child: const Text(
                 'Run your app in debug mode and call '
-                'SqliteInspector.register(db) after opening the database, '
+                'SqliteDevtoolApi.register(db) after opening the database, '
                 'then refresh.',
                 textAlign: TextAlign.center,
                 style: TextStyle(

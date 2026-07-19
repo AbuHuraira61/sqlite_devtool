@@ -6,18 +6,18 @@ import 'package:sqflite/sqflite.dart';
 /// Registers the `ext.sqlite_inspector.*` service extensions that the
 /// SQLite Inspector DevTools extension calls.
 ///
-/// Call [SqliteInspector.register] once from the main isolate after opening
+/// Call [SqliteDevtoolApi.register] once from the main isolate after opening
 /// your database:
 ///
 /// ```dart
 /// final db = await openDatabase('app.db');
-/// SqliteInspector.register(db);
+/// SqliteDevtoolApi.register(db);
 /// ```
 ///
 /// Service extensions only exist in debug and profile builds, so this is a
 /// no-op in release builds as far as DevTools is concerned.
-class SqliteInspector {
-  SqliteInspector._();
+class SqliteDevtoolApi {
+  SqliteDevtoolApi._();
 
   static Database? _db;
   static bool _registered = false;
@@ -31,8 +31,10 @@ class SqliteInspector {
     if (_registered) return;
     _registered = true;
 
-    developer.registerExtension('ext.sqlite_inspector.getTables',
-        (method, params) async {
+    developer.registerExtension('ext.sqlite_inspector.getTables', (
+      method,
+      params,
+    ) async {
       try {
         final db = _requireDb();
         final rows = await db.rawQuery(
@@ -48,8 +50,10 @@ class SqliteInspector {
       }
     });
 
-    developer.registerExtension('ext.sqlite_devtool_api.executeQuery',
-        (method, params) async {
+    developer.registerExtension('ext.sqlite_devtool_api.executeQuery', (
+      method,
+      params,
+    ) async {
       try {
         final db = _requireDb();
         final query = (params['query'] ?? '').trim();
@@ -57,7 +61,8 @@ class SqliteInspector {
           return _error('No query provided.');
         }
         final upper = query.toUpperCase();
-        final isReadQuery = upper.startsWith('SELECT') ||
+        final isReadQuery =
+            upper.startsWith('SELECT') ||
             upper.startsWith('PRAGMA') ||
             upper.startsWith('EXPLAIN') ||
             upper.startsWith('WITH');
@@ -78,8 +83,10 @@ class SqliteInspector {
       }
     });
 
-    developer.registerExtension('ext.sqlite_inspector.getSchema',
-        (method, params) async {
+    developer.registerExtension('ext.sqlite_inspector.getSchema', (
+      method,
+      params,
+    ) async {
       try {
         final db = _requireDb();
         final tableRows = await db.rawQuery(
@@ -92,11 +99,14 @@ class SqliteInspector {
           final name = row['name'] as String;
           final quoted = _quote(name);
           final columns = await db.rawQuery('PRAGMA table_info($quoted)');
-          final foreignKeys =
-              await db.rawQuery('PRAGMA foreign_key_list($quoted)');
+          final foreignKeys = await db.rawQuery(
+            'PRAGMA foreign_key_list($quoted)',
+          );
           var rowCount = -1;
           try {
-            final count = await db.rawQuery('SELECT COUNT(*) AS c FROM $quoted');
+            final count = await db.rawQuery(
+              'SELECT COUNT(*) AS c FROM $quoted',
+            );
             rowCount = (count.first['c'] as num?)?.toInt() ?? -1;
           } catch (_) {
             // Row count is informational only; leave it unknown on failure.
@@ -140,7 +150,7 @@ class SqliteInspector {
     final db = _db;
     if (db == null || !db.isOpen) {
       throw StateError(
-        'No open database registered. Call SqliteInspector.register(db) '
+        'No open database registered. Call SqliteDevtoolApi.register(db) '
         'after opening your database.',
       );
     }
@@ -174,4 +184,3 @@ class SqliteInspector {
     };
   }
 }
-

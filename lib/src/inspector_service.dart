@@ -11,8 +11,7 @@ class QueryResult {
   final Duration elapsed;
 }
 
-/// Talks to the `ext.sqlite_inspector.*` service extensions registered by the
-/// sqlite_inspector package inside the connected app.
+
 class InspectorService {
   Future<Map<String, dynamic>> _call(
     String method, {
@@ -27,8 +26,6 @@ class InspectorService {
     return decoded is Map<String, dynamic> ? decoded : <String, dynamic>{};
   }
 
-  /// Fetches the full schema map. Falls back to bare table names when the
-  /// connected app runs an older sqlite_inspector without `getSchema`.
   Future<DbSchema> fetchSchema() async {
     try {
       return DbSchema.fromJson(await _call('ext.sqlite_inspector.getSchema'));

@@ -22,9 +22,8 @@ steps to follow.
 3. **The built assets** (`sqlite_devtool_api/extension/devtools/build/`) —
    DevTools does NOT run your `lib/` source. It loads this pre-built copy.
 
-## The two golden rules
 
-**Rule 1 — Changed anything in `lib/` (the UI)?**
+**1 — Changed anything in `lib/` (the UI)?**
 The change is invisible until you rebuild the assets:
 
 ```powershell
@@ -33,7 +32,7 @@ dart run devtools_extensions build_and_copy --source=. --dest=sqlite_devtool_api
 
 Then close and reopen the DevTools tab.
 
-**Rule 2 — Changed anything in `sqlite_devtool_api/lib/` (the app side)?**
+**2 — Changed anything in `sqlite_devtool_api/lib/` (the app side)?**
 No rebuild needed, but the code runs inside your app — so **stop your app and
 run it again** (a full restart, not hot reload). Then press Refresh in the
 extension.
